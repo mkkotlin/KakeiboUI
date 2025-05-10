@@ -1,0 +1,11 @@
+<hr>
+<p>income components</p>
+<ul *ngIf="incomes.length">
+    <li *ngFor="let income of incomes">
+        id: {{income.id}}
+        source: {{income.source}}
+        amount: {{income.amount}}
+        date: {{income.date}}
+        notes: {{income.notes}}
+    </li>
+</ul>

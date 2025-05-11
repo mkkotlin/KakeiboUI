@@ -18,7 +18,12 @@ export class ExpenseService {
   private http = inject(HttpClient);
   // private apiUrl = 'https://jsonplaceholder.typicode.com/users';
   private apiUrl = 'http://127.0.0.1:8000/api/expenses/';
+  // Fetch from api
   getExpense(): Observable<Expense[]>{
     return this.http.get<Expense[]>(this.apiUrl);
+  }
+  // Add using api
+  addExpense(expense: Expense){
+    return this.http.post(this.apiUrl,expense);
   }
 }

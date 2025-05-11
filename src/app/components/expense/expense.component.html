@@ -1,3 +1,54 @@
+<form (ngSubmit)="submitExpense()">
+  <select [(ngModel)]="newExpense.category" name="category">
+    <option *ngFor="let cat of categories" [value]="cat.id">{{ cat.name }}</option>
+  </select>
+
+  <input type="number" placeholder="Amount" [(ngModel)]="newExpense.amount" name="amount" />
+  <input type="date" [(ngModel)]="newExpense.date" name="date" />
+  <input type="text" placeholder="Notes" [(ngModel)]="newExpense.notes" name="notes" />
+  <button type="submit">Add Expense</button>
+</form>
+
+<!-- <ul>
+  <li *ngFor="let exp of expenses">
+    {{ exp.category }} - {{ exp.amount }} - {{ exp.date }} - {{ exp.notes }}
+  </li>
+</ul> -->
+<!-- <p>expense components</p>
+ <ul *ngIf="expenses.length">
+  <li *ngFor="let expense of expenses">
+    <div class="card">
+  id: {{expense.id}}
+  <div class="container">
+    category: {{expense.category}}
+    amount: {{expense.amount}}
+    date: {{expense.date}}
+    notes: {{expense.notes}}
+  </div>
+</div>
+  </li>
+  </ul>
+<form (ngSubmit)="submitExpense()">
+  <input type="text" placeholder="Category" [(ngModel)]="newExpense.category" name="category" />
+  <input type="number" placeholder="Amount" [(ngModel)]="newExpense.amount" name="amount" />
+  <input type="date" [(ngModel)]="newExpense.date" name="date" />
+  <input type="text" placeholder="Notes" [(ngModel)]="newExpense.notes" name="notes" />
+  <button type="submit">Add Expense</button>
+</form> -->
+
+<!-- <ul>
+  <li *ngFor="let exp of expenses">
+    {{ exp.category }} - {{ exp.amount }} - {{ exp.date }} - {{ exp.notes }}
+  </li>
+</ul> -->
+
+
+
+
+
+
+
+
 <p>expense components</p>
  <ul *ngIf="expenses.length">
   <li *ngFor="let expense of expenses">

@@ -13,8 +13,10 @@ export class ExpenseComponent implements OnInit{
   private expenseService = inject(ExpenseService);
   expenses: Expense[] = [];
   ngOnInit(){
-    this.expenseService.getExpense().subscribe((data)=>{
+    this.expenseService.getExpense().subscribe((data: any[])=>{
       this.expenses = data;
+      this.filteredExpenses = data;
+      this.uniqueCategory = [...new Set(data.map(d=>d.category))]
     })
   }
 
@@ -46,5 +48,29 @@ export class ExpenseComponent implements OnInit{
       this.ngOnInit();
     })
   }
+
+  delete(id:number){
+    this.expenseService.deleteExpense(id).subscribe(()=>{
+      this.expenses = this.expenses.filter(expense => expense.id !== id);
+    })
+  }
+
+  filterCategory: string = '';
+  filterDate: string = '';
+  uniqueCategory: string[] = [];
+  filteredExpenses: any [] =[];
+  applyFilters(){
+    this.filteredExpenses = this.expenses.filter(expense => {
+      const matchCategory = this.filterCategory? expense.category === this.filterCategory: true;
+      const matchDate = this.filterDate? expense.date === this.filterDate: true;
+      return matchCategory && matchDate;
+    })
+  };
+  resetFilters(){
+    this.filterCategory = '';
+    this.filterDate = '';
+    this.filteredExpenses = [...this.expenses]
+  };
+
 
 }

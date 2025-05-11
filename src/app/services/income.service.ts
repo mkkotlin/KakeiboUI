@@ -21,4 +21,12 @@ export class IncomeService {
   getIncome(): Observable<Income[]>{
     return this.http.get<Income[]>(this.apiUrl)
   }
+
+  addIncome(income: Income){
+    return this.http.post(this.apiUrl,income)
+  }
+
+  deleteIncome(id:number){
+    return this.http.delete(`${this.apiUrl}${id}/delete/`);
+  }
 }

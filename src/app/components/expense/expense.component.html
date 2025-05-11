@@ -1,3 +1,16 @@
+<!-- Filter Section -->
+<select [(ngModel)]="filterCategory" name="filterCategory">
+  <option value="">All Categories</option>
+  <option *ngFor="let cat of uniqueCategory" [value]="cat">{{ cat }}</option>
+</select>
+
+<input type="date" [(ngModel)]="filterDate" name="filterDate" />
+
+<button (click)="applyFilters()">Apply Filters</button>
+<button (click)="resetFilters()">Reset</button>
+
+
+
 <form (ngSubmit)="submitExpense()">
   <select [(ngModel)]="newExpense.category" name="category">
     <option *ngFor="let cat of categories" [value]="cat.id">{{ cat.name }}</option>
@@ -51,7 +64,7 @@
 
 <p>expense components</p>
  <ul *ngIf="expenses.length">
-  <li *ngFor="let expense of expenses">
+  <li *ngFor="let expense of filteredExpenses">
     <div class="card">
   id: {{expense.id}}
   <div class="container">
@@ -59,6 +72,7 @@
     amount: {{expense.amount}}
     date: {{expense.date}}
     notes: {{expense.notes}}
+    <button (click)="delete(expense.id)">delete</button>
   </div>
 </div>
   </li>

@@ -1,4 +1,14 @@
 <hr>
+
+<form (ngSubmit)="submitIncome()">
+ <input type="text" placeholder="source" [(ngModel)]="newIncome.source" [ngModelOptions]="{standalone: true}"/>
+  <input type="number" placeholder="Amount" [(ngModel)]="newIncome.amount" name="amount" [ngModelOptions]="{standalone: true}" />
+  <input type="date" [(ngModel)]="newIncome.date" name="date" [ngModelOptions]="{standalone: true}"/>
+  <input type="text" placeholder="Notes" [(ngModel)]="newIncome.notes" name="notes" [ngModelOptions]="{standalone: true}" />
+  <button type="submit">Add Expense</button>
+</form>
+<div *ngIf="successMessage" style="color: green;">{{successMessage}}</div>
+<div *ngIf="errorMessage" style="color: red;">{{errorMessage}}</div>
 <p>income components</p>
 <ul *ngIf="incomes.length">
     <li *ngFor="let income of incomes">
@@ -7,5 +17,6 @@
         amount: {{income.amount}}
         date: {{income.date}}
         notes: {{income.notes}}
+        <button (click)="delete(income.id)">delete</button>
     </li>
 </ul>

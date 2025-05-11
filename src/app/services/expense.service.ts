@@ -26,4 +26,9 @@ export class ExpenseService {
   addExpense(expense: Expense){
     return this.http.post(this.apiUrl,expense);
   }
+
+  // Delete
+  deleteExpense(id:number){
+    return this.http.delete(`${this.apiUrl}${id}/delete/`);
+  }
 }

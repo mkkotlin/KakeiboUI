@@ -1,15 +1,18 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms'
+import { FormBuilder, FormGroup, FormsModule, Validators } from '@angular/forms'
 import { CommonModule } from '@angular/common';
 import { ExpenseService, Expense } from '../../services/expense.service';
 
 @Component({
   selector: 'app-expense',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule,],
   templateUrl: './expense.component.html',
   styleUrl: './expense.component.css'
 })
 export class ExpenseComponent implements OnInit{
+
+
+
   private expenseService = inject(ExpenseService);
   expenses: Expense[] = [];
   ngOnInit(){
@@ -41,7 +44,7 @@ export class ExpenseComponent implements OnInit{
       this.newExpense = {
         category: '',
         amount: '',
-        date: '',
+        date: new Date().toISOString().split('T')[0],
         notes: '',
         id:0,
       };
@@ -52,6 +55,7 @@ export class ExpenseComponent implements OnInit{
   delete(id:number){
     this.expenseService.deleteExpense(id).subscribe(()=>{
       this.expenses = this.expenses.filter(expense => expense.id !== id);
+      this.ngOnInit();
     })
   }
 

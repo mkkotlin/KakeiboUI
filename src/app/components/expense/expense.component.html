@@ -22,58 +22,19 @@
   <button type="submit">Add Expense</button>
 </form>
 
-<!-- <ul>
-  <li *ngFor="let exp of expenses">
-    {{ exp.category }} - {{ exp.amount }} - {{ exp.date }} - {{ exp.notes }}
-  </li>
-</ul> -->
-<!-- <p>expense components</p>
- <ul *ngIf="expenses.length">
-  <li *ngFor="let expense of expenses">
-    <div class="card">
-  id: {{expense.id}}
-  <div class="container">
-    category: {{expense.category}}
-    amount: {{expense.amount}}
-    date: {{expense.date}}
-    notes: {{expense.notes}}
-  </div>
-</div>
-  </li>
-  </ul>
-<form (ngSubmit)="submitExpense()">
-  <input type="text" placeholder="Category" [(ngModel)]="newExpense.category" name="category" />
-  <input type="number" placeholder="Amount" [(ngModel)]="newExpense.amount" name="amount" />
-  <input type="date" [(ngModel)]="newExpense.date" name="date" />
-  <input type="text" placeholder="Notes" [(ngModel)]="newExpense.notes" name="notes" />
-  <button type="submit">Add Expense</button>
-</form> -->
-
-<!-- <ul>
-  <li *ngFor="let exp of expenses">
-    {{ exp.category }} - {{ exp.amount }} - {{ exp.date }} - {{ exp.notes }}
-  </li>
-</ul> -->
-
-
-
-
-
-
-
-
-<p>expense components</p>
- <ul *ngIf="expenses.length">
+<p>Expense Components</p>
+<ul *ngIf="expenses.length" class="expense-list">
   <li *ngFor="let expense of filteredExpenses">
     <div class="card">
-  id: {{expense.id}}
-  <div class="container">
-    category: {{expense.category}}
-    amount: {{expense.amount}}
-    date: {{expense.date}}
-    notes: {{expense.notes}}
-    <button (click)="delete(expense.id)">delete</button>
-  </div>
-</div>
+      <h3><strong>Date:</strong> {{expense.date}}</h3>
+      <div class="sub-class">
+        <p>Category: {{expense.category}}</p>
+        <p class="amount"><strong>Amount:</strong> {{expense.amount}}</p>
+        <p><strong>Notes:</strong> {{expense.notes}}</p>
+      </div>
+      <div class="footer-class">
+        <button (click)="delete(expense.id)" class="submit_btn">Delete</button>
+      </div>
+    </div>
   </li>
-  </ul>
+</ul>

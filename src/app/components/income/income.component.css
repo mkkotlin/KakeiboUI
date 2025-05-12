@@ -1,0 +1,73 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Align items to the top */
+    flex-wrap: wrap;        /* Allow wrapping of items */
+    height: auto;           /* Allow height to adjust based on content */
+    margin: 0;
+    padding: 20px;         /* Add some padding around the body */
+}
+
+ul {
+    display: flex;               /* Use Flexbox for layout */
+    flex-wrap: wrap;            /* Allow items to wrap to the next line */
+    padding: 0;                 /* Remove default padding */
+    margin: 0;                  /* Remove default margin */
+    list-style-type: none;      /* Remove bullet points */
+}
+
+li {
+    flex: 1 1 300px;            /* Allow items to grow and shrink, with a base width of 300px */
+    margin: 10px;               /* Space between items */
+}
+
+.card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 20px 30px rgba(0, 0, 0, 0.5);
+    padding: 10px;
+    width: 300px;               /* Fixed width for cards */
+    border: 2px solid red;      /* Red border */
+    height: max-content;        /* Allow height to adjust based on content */
+}
+
+.card h2 {
+    margin: 0 0 10px;
+    font-size: 1.5em;
+}
+
+.card p {
+    margin: 5px 0;
+    font-size: 1em;
+}
+
+.amount {
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.sub-class {
+    border-top: 1px solid black;
+    padding-top: 10px;         /* Add some padding for better spacing */
+}
+
+.footer-class {
+    border-top: 1px solid black;
+    padding-top: 10px;         /* Add some padding for better spacing */
+}
+
+.submit_btn {
+    margin-top: 10px;
+    background-color: rgb(214, 194, 194);
+    border-radius: 5px;
+    border: none;               /* Remove default border */
+    padding: 5px 10px;         /* Add padding for button */
+    cursor: pointer;            /* Change cursor to pointer */
+}
+
+.submit_btn:hover {
+    background-color: rgb(255, 0, 0);
+    color: white;               /* Change text color on hover */
+}

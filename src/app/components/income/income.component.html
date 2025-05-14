@@ -1,14 +1,36 @@
 <hr>
+<form [formGroup]="incomeForm" (ngSubmit)="submitIncome()">
+  <input type="text" placeholder="Source" formControlName="source" />
+  <div *ngIf="incomeForm.get('source')?.touched && incomeForm.get('source')?.invalid">
+    Source is required
+  </div>
 
-<form (ngSubmit)="submitIncome()">
+  <input type="number" placeholder="Amount" formControlName="amount" />
+  <div *ngIf="incomeForm.get('amount')?.touched && incomeForm.get('amount')?.invalid">
+    Amount is required and must be positive
+  </div>
+
+  <input type="date" formControlName="date" />
+  <div *ngIf="incomeForm.get('date')?.touched && incomeForm.get('date')?.invalid">
+    Date is required
+  </div>
+
+  <input type="text" placeholder="Notes" formControlName="notes" />
+
+  <button type="submit">Add Income</button>
+</form>
+
+<p *ngIf="successMessage" style="color: green">{{ successMessage }}</p>
+<p *ngIf="errorMessage" style="color: red">{{ errorMessage }}</p>
+<!-- <form (ngSubmit)="submitIncome()">
  <input type="text" placeholder="source" [(ngModel)]="newIncome.source" [ngModelOptions]="{standalone: true}"/>
   <input type="number" placeholder="Amount" [(ngModel)]="newIncome.amount" name="amount" [ngModelOptions]="{standalone: true}" />
   <input type="date" [(ngModel)]="newIncome.date" name="date" [ngModelOptions]="{standalone: true}"/>
   <input type="text" placeholder="Notes" [(ngModel)]="newIncome.notes" name="notes" [ngModelOptions]="{standalone: true}" />
   <button type="submit">Add Expense</button>
-</form>
-<div *ngIf="successMessage" style="color: green;">{{successMessage}}</div>
-<div *ngIf="errorMessage" style="color: red;">{{errorMessage}}</div>
+</form> -->
+<!-- <div *ngIf="successMessage" style="color: green;">{{successMessage}}</div>
+<div *ngIf="errorMessage" style="color: red;">{{errorMessage}}</div> -->
 <p>income components</p>
 <ul *ngIf="incomes.length">
     <li *ngFor="let income of incomes">

@@ -2,10 +2,11 @@ import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, Validators } from '@angular/forms'
 import { CommonModule } from '@angular/common';
 import { ExpenseService, Expense } from '../../services/expense.service';
+import { RouterLink, RouterLinkActive, RouterModule, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-expense',
-  imports: [CommonModule, FormsModule,],
+  imports: [CommonModule, FormsModule, RouterModule,],
   templateUrl: './expense.component.html',
   styleUrl: './expense.component.css'
 })

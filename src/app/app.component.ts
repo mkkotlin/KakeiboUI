@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
-import { ExpenseComponent } from './components/expense/expense.component';
-import { IncomeComponent } from './components/income/income.component';
+import { RouterLink, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  imports: [ExpenseComponent,IncomeComponent],
+  imports: [RouterOutlet, RouterLink],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

@@ -1,9 +1,14 @@
-import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { Observable, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+  private http = inject(HttpClient);
+  private apiUrl = 'http://127.0.0.1:8000/api/auth/';
+
   isLoggedIn = false;
   currentUser: { username: string } | null = null;
 
@@ -19,31 +24,20 @@ export class AuthService {
     }
   }
 
-  register(username: string, email: string, password: string): boolean {
-    const usersJson = localStorage.getItem('kakeibo_users') || '[]';
-    const users = JSON.parse(usersJson) as any[];
-
-    if (users.find(u => u.username.toLowerCase() === username.toLowerCase())) {
-      return false; // User already exists
-    }
-
-    users.push({ username, email, password });
-    localStorage.setItem('kakeibo_users', JSON.stringify(users));
-    return true;
+  register(username: string, email: string, password: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}register/`, { username, email, password });
   }
 
-  login(username: string, password: string): boolean {
-    const usersJson = localStorage.getItem('kakeibo_users') || '[]';
-    const users = JSON.parse(usersJson) as any[];
-
-    const user = users.find(u => u.username.toLowerCase() === username.toLowerCase() && u.password === password);
-    if (user) {
-      this.isLoggedIn = true;
-      this.currentUser = { username: user.username };
-      localStorage.setItem('kakeibo_session', user.username);
-      return true;
-    }
-    return false;
+  login(username: string, password: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}login/`, { username, password }).pipe(
+      tap(res => {
+        if (res && res.username) {
+          this.isLoggedIn = true;
+          this.currentUser = { username: res.username };
+          localStorage.setItem('kakeibo_session', res.username);
+        }
+      })
+    );
   }
 
   logout() {

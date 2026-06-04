@@ -42,12 +42,14 @@ export class AuthComponent {
       return;
     }
 
-    const success = this.authService.login(this.loginUsername, this.loginPassword);
-    if (!success) {
-      this.errorMessage = 'Invalid username or password.';
-    } else {
-      this.successMessage = 'Login successful!';
-    }
+    this.authService.login(this.loginUsername, this.loginPassword).subscribe({
+      next: (res) => {
+        this.successMessage = 'Login successful!';
+      },
+      error: (err) => {
+        this.errorMessage = err.error?.error || 'Invalid username or password.';
+      }
+    });
   }
 
   onSubmitRegister() {
@@ -64,20 +66,22 @@ export class AuthComponent {
       return;
     }
 
-    const success = this.authService.register(this.regUsername, this.regEmail, this.regPassword);
-    if (!success) {
-      this.errorMessage = 'Username already exists. Please choose another one.';
-    } else {
-      this.successMessage = 'Account created successfully! Please sign in.';
-      // Pre-fill login username and switch modes
-      this.loginUsername = this.regUsername;
-      this.regUsername = '';
-      this.regEmail = '';
-      this.regPassword = '';
-      setTimeout(() => {
-        this.isSignUpMode = false;
-        this.successMessage = 'Registration successful! Enter password to login.';
-      }, 1500);
-    }
+    this.authService.register(this.regUsername, this.regEmail, this.regPassword).subscribe({
+      next: (res) => {
+        this.successMessage = 'Account created successfully! Please sign in.';
+        // Pre-fill login username and switch modes
+        this.loginUsername = this.regUsername;
+        this.regUsername = '';
+        this.regEmail = '';
+        this.regPassword = '';
+        setTimeout(() => {
+          this.isSignUpMode = false;
+          this.successMessage = 'Registration successful! Enter password to login.';
+        }, 1500);
+      },
+      error: (err) => {
+        this.errorMessage = err.error?.error || 'Registration failed. Please try again.';
+      }
+    });
   }
 }

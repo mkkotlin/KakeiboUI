@@ -1,73 +1,280 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start; /* Align items to the top */
-    flex-wrap: wrap;        /* Allow wrapping of items */
-    height: auto;           /* Allow height to adjust based on content */
-    margin: 0;
-    padding: 20px;         /* Add some padding around the body */
+.component-header {
+  margin-bottom: 2rem;
 }
 
-ul {
-    display: flex;               /* Use Flexbox for layout */
-    flex-wrap: wrap;            /* Allow items to wrap to the next line */
-    padding: 0;                 /* Remove default padding */
-    margin: 0;                  /* Remove default margin */
-    list-style-type: none;      /* Remove bullet points */
+.component-header h1 {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 0.25rem;
 }
 
-li {
-    flex: 1 1 300px;            /* Allow items to grow and shrink, with a base width of 300px */
-    margin: 10px;               /* Space between items */
+.subtitle {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
 }
 
-.card {
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 20px 30px rgba(0, 0, 0, 0.5);
-    padding: 10px;
-    width: 300px;               /* Fixed width for cards */
-    border: 2px solid red;      /* Red border */
-    height: max-content;        /* Allow height to adjust based on content */
+.tracker-layout {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 2rem;
+  align-items: start;
 }
 
-.card h2 {
-    margin: 0 0 10px;
-    font-size: 1.5em;
+/* Form Styles */
+.form-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
-.card p {
-    margin: 5px 0;
-    font-size: 1em;
+.form-card h3 {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  font-weight: 700;
 }
 
-.amount {
-    font-weight: bold;
-    color: #2c3e50;
+.card-subtitle {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
 }
 
-.sub-class {
-    border-top: 1px solid black;
-    padding-top: 10px;         /* Add some padding for better spacing */
+.expense-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
 }
 
-.footer-class {
-    border-top: 1px solid black;
-    padding-top: 10px;         /* Add some padding for better spacing */
+.form-group {
+  display: flex;
+  flex-direction: column;
 }
 
-.submit_btn {
-    margin-top: 10px;
-    background-color: rgb(214, 194, 194);
-    border-radius: 5px;
-    border: none;               /* Remove default border */
-    padding: 5px 10px;         /* Add padding for button */
-    cursor: pointer;            /* Change cursor to pointer */
+.w-full {
+  width: 100%;
 }
 
-.submit_btn:hover {
-    background-color: rgb(255, 0, 0);
-    color: white;               /* Change text color on hover */
+/* Ledger List / Right column */
+.ledger-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Filter Card */
+.filter-card {
+  padding: 1.25rem 1.5rem;
+}
+
+.filter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.filter-header h4 {
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.btn-reset {
+  background: none;
+  border: none;
+  font-size: 0.75rem;
+  color: var(--primary);
+  cursor: pointer;
+  font-weight: 500;
+  transition: color var(--transition-fast);
+}
+
+.btn-reset:hover {
+  color: var(--primary-hover);
+  text-decoration: underline;
+}
+
+.filter-controls {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 1rem;
+  align-items: center;
+}
+
+.filter-group {
+  width: 100%;
+}
+
+.btn-apply {
+  padding: 0.65rem 1.5rem;
+  height: 38px;
+  font-size: 0.85rem;
+}
+
+/* Entries grid */
+.ledger-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--glass-border);
+  padding-bottom: 0.5rem;
+}
+
+.ledger-header h4 {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.entry-count {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.expense-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.25rem;
+}
+
+.expense-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.25rem;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--glass-border);
+}
+
+.expense-card:hover {
+  background: rgba(255, 255, 255, 0.04);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.category-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 0.25rem 0.6rem;
+  border-radius: var(--radius-full);
+  letter-spacing: 0.02em;
+}
+
+/* Category Badge Colors */
+.category-badge.food {
+  background: rgba(239, 68, 68, 0.12);
+  color: #fca5a5;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.category-badge.entertainment {
+  background: rgba(59, 130, 246, 0.12);
+  color: #93c5fd;
+  border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+.category-badge.bills {
+  background: rgba(245, 158, 11, 0.12);
+  color: #fde047;
+  border: 1px solid rgba(245, 158, 11, 0.2);
+}
+
+.category-badge.others {
+  background: rgba(16, 185, 129, 0.12);
+  color: #6ee7b7;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.card-date {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex-grow: 1;
+}
+
+.amount-value {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--danger);
+}
+
+.notes-text {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.notes-text.muted {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: flex-end;
+  border-top: 1px solid var(--glass-border);
+  padding-top: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.btn-danger-link {
+  background: none;
+  border: none;
+  color: #fca5a5;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  transition: color var(--transition-fast);
+}
+
+.btn-danger-link:hover {
+  color: var(--danger);
+}
+
+/* Fallback Card */
+.ledger-fallback {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 3rem;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.fallback-icon {
+  opacity: 0.5;
+}
+
+/* Responsive Styles */
+@media (max-width: 992px) {
+  .tracker-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .filter-controls {
+    grid-template-columns: 1fr;
+  }
 }

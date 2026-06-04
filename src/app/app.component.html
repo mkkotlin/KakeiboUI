@@ -1,10 +1,120 @@
-<h3>Welcome Dashboard</h3>
-<hr>
-<nav>
-<br>
-<a routerLink="/expense">expense</a>
-<br>
-<a routerLink="/income">income</a>
-</nav>
-<hr>
-<router-outlet></router-outlet>
+<div class="layout-wrapper" *ngIf="authService.isLoggedIn; else loginView">
+  <!-- Desktop Sidebar Navigation -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <span class="brand-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+        </svg>
+      </span>
+      <div class="brand-text">
+        <h2>Kakeibo</h2>
+        <!-- <span>家計簿 Ledger</span> -->
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a routerLink="/dashboard" routerLinkActive="active" class="nav-item">
+        <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="7" height="9" rx="1" />
+          <rect x="14" y="3" width="7" height="5" rx="1" />
+          <rect x="14" y="12" width="7" height="9" rx="1" />
+          <rect x="3" y="16" width="7" height="5" rx="1" />
+        </svg>
+        <span>Dashboard</span>
+      </a>
+
+      <a routerLink="/income" routerLinkActive="active" class="nav-item">
+        <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="5" x2="12" y2="19" />
+          <polyline points="19 12 12 19 5 12" />
+        </svg>
+        <span>Income</span>
+      </a>
+
+      <a routerLink="/expense" routerLinkActive="active" class="nav-item">
+        <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="19" x2="12" y2="5" />
+          <polyline points="5 12 12 5 19 12" />
+        </svg>
+        <span>Expenses</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-profile">
+        <div class="avatar">{{ (authService.currentUser?.username || 'U')[0].toUpperCase() }}</div>
+        <div class="user-info">
+          <p class="user-name">{{ authService.currentUser?.username || 'User' }}</p>
+          <span class="user-status">Ledger Active</span>
+        </div>
+      </div>
+      <button (click)="authService.logout()" class="btn-logout" title="Sign out">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Mobile Bottom Navigation -->
+  <nav class="mobile-nav">
+    <a routerLink="/dashboard" routerLinkActive="active" class="mobile-nav-item">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="3" width="7" height="9" rx="1" />
+        <rect x="14" y="3" width="7" height="5" rx="1" />
+        <rect x="14" y="12" width="7" height="9" rx="1" />
+        <rect x="3" y="16" width="7" height="5" rx="1" />
+      </svg>
+      <span>Dashboard</span>
+    </a>
+    <a routerLink="/income" routerLinkActive="active" class="mobile-nav-item">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="12" y1="5" x2="12" y2="19" />
+        <polyline points="19 12 12 19 5 12" />
+      </svg>
+      <span>Income</span>
+    </a>
+    <a routerLink="/expense" routerLinkActive="active" class="mobile-nav-item">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="12" y1="19" x2="12" y2="5" />
+        <polyline points="5 12 12 5 19 12" />
+      </svg>
+      <span>Expenses</span>
+    </a>
+  </nav>
+
+  <!-- Main Content Area -->
+  <main class="main-content">
+    <header class="main-header">
+      <div class="header-search">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8" />
+          <line x1="21" y1="21" x2="16.65" y2="16.65" />
+        </svg>
+        <input type="text" placeholder="Search ledger..." [(ngModel)]="searchQuery" (input)="onSearchChange($event)" class="search-input" />
+      </div>
+      <div class="header-actions">
+        <span class="pulse-dot"></span>
+        <span class="live-status">Sync Online</span>
+        <button (click)="authService.logout()" class="mobile-logout-btn" title="Sign out">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <div class="content-body">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+</div>
+
+<ng-template #loginView>
+  <app-auth></app-auth>
+</ng-template>

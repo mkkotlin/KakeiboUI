@@ -1,0 +1,188 @@
+<div class="page-container">
+  <div class="dashboard-header">
+    <h1>Dashboard Overview</h1>
+    <p class="subtitle">Monitor your assets, expenses, and savings breakdown in real time.</p>
+  </div>
+
+  <!-- Metric Grid -->
+  <div class="metrics-grid">
+    <!-- Net Balance Card -->
+    <div class="metric-card glass-card balance-card">
+      <div class="card-glow"></div>
+      <div class="metric-info">
+        <span class="metric-label">Net Balance</span>
+        <h2 class="metric-value" [ngClass]="{'positive': netBalance >= 0, 'negative': netBalance < 0}">
+          {{ netBalance | currency:'INR':'symbol':'1.0-2' }}
+        </h2>
+        <span class="metric-sub">Total savings in ledger</span>
+      </div>
+      <div class="metric-icon balance-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2" ry="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+      </div>
+    </div>
+
+    <!-- Income Card -->
+    <div class="metric-card glass-card">
+      <div class="metric-info">
+        <span class="metric-label">Total Income</span>
+        <h2 class="metric-value success-text">{{ totalIncome | currency:'INR':'symbol':'1.0-2' }}</h2>
+        <span class="metric-sub">All cash inflows</span>
+      </div>
+      <div class="metric-icon income-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+      </div>
+    </div>
+
+    <!-- Expenses Card -->
+    <div class="metric-card glass-card">
+      <div class="metric-info">
+        <span class="metric-label">Total Expenses</span>
+        <h2 class="metric-value danger-text">{{ totalExpense | currency:'INR':'symbol':'1.0-2' }}</h2>
+        <span class="metric-sub">All cash outflows</span>
+      </div>
+      <div class="metric-icon expense-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+      </div>
+    </div>
+
+    <!-- Savings Rate Card -->
+    <div class="metric-card glass-card">
+      <div class="metric-info">
+        <span class="metric-label">Savings Rate</span>
+        <h2 class="metric-value savings-text">{{ savingsRate | number:'1.0-0' }}%</h2>
+        <div class="progress-bar-container">
+          <div class="progress-bar-fill" [style.width.%]="savingsRate"></div>
+        </div>
+      </div>
+      <div class="metric-icon savings-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/></svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Charts & Details Grid -->
+  <div class="dashboard-details-grid">
+    <!-- Cash Flow Chart Container -->
+    <div class="chart-container glass-card main-chart">
+      <div class="chart-header">
+        <div>
+          <h3>Cash Flow Activity</h3>
+          <p class="chart-subtitle">Compare Income vs Expenses over time</p>
+        </div>
+        <div class="chart-legend">
+          <span class="legend-item"><span class="legend-dot income-dot"></span> Income</span>
+          <span class="legend-item"><span class="legend-dot expense-dot"></span> Expense</span>
+        </div>
+      </div>
+
+      <!-- SVG Line/Area Chart -->
+      <div class="chart-wrapper">
+        <svg *ngIf="chartDates.length > 0" viewBox="0 0 500 150" class="svg-chart">
+          <!-- Gradients -->
+          <defs>
+            <linearGradient id="income-grad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="var(--success)" stop-opacity="0.3"/>
+              <stop offset="100%" stop-color="var(--success)" stop-opacity="0"/>
+            </linearGradient>
+            <linearGradient id="expense-grad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="var(--danger)" stop-opacity="0.3"/>
+              <stop offset="100%" stop-color="var(--danger)" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+
+          <!-- Grid Lines -->
+          <line x1="50" y1="30" x2="450" y2="30" stroke="var(--glass-border)" stroke-width="0.5" stroke-dasharray="3,3" />
+          <line x1="50" y1="80" x2="450" y2="80" stroke="var(--glass-border)" stroke-width="0.5" stroke-dasharray="3,3" />
+          <line x1="50" y1="130" x2="450" y2="130" stroke="var(--glass-border)" stroke-width="1" />
+
+          <!-- Income Area and Line -->
+          <polygon *ngIf="chartPoints" [attr.points]="'50,130 ' + chartPoints + ' 440,130'" fill="url(#income-grad)" />
+          <polyline *ngIf="chartPoints" [attr.points]="chartPoints" fill="none" stroke="var(--success)" stroke-width="3" stroke-linecap="round" />
+
+          <!-- Expense Area and Line -->
+          <polygon *ngIf="chartExpensePoints" [attr.points]="'50,130 ' + chartExpensePoints + ' 440,130'" fill="url(#expense-grad)" />
+          <polyline *ngIf="chartExpensePoints" [attr.points]="chartExpensePoints" fill="none" stroke="var(--danger)" stroke-width="3" stroke-linecap="round" />
+
+          <!-- Y Axis label placeholder -->
+          <text x="15" y="35" fill="var(--text-muted)" font-size="7">Max</text>
+          <text x="15" y="130" fill="var(--text-muted)" font-size="7">₹0</text>
+
+          <!-- X Axis Dates -->
+          <text *ngFor="let date of chartDates; let i = index" 
+                [attr.x]="40 + (i * 65)" 
+                y="145" 
+                fill="var(--text-muted)" 
+                font-size="7.5"
+                text-anchor="middle">
+            {{ date | date:'MMM d' }}
+          </text>
+        </svg>
+
+        <!-- Fallback if no data -->
+        <div class="chart-fallback" *ngIf="chartDates.length === 0">
+          <svg class="fallback-icon" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V10M18 20V4M6 20v-4"/></svg>
+          <p>No ledger transactions recorded yet</p>
+          <a routerLink="/expense" class="btn-primary btn-sm">Add Transaction</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Category breakdown sidebar -->
+    <div class="category-breakdown-card glass-card">
+      <h3>Expense Breakdown</h3>
+      <p class="chart-subtitle">Top spending categories</p>
+      
+      <div class="breakdown-list" *ngIf="categoryBreakdown.length > 0">
+        <div class="breakdown-item" *ngFor="let cat of categoryBreakdown">
+          <div class="breakdown-info">
+            <span class="breakdown-name">{{ cat.name }}</span>
+            <span class="breakdown-amount">{{ cat.amount | currency:'INR':'symbol':'1.0-2' }} ({{ cat.percentage }}%)</span>
+          </div>
+          <div class="breakdown-bar">
+            <div class="breakdown-fill" [style.background-color]="cat.color" [style.width.%]="cat.percentage"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="breakdown-fallback" *ngIf="categoryBreakdown.length === 0">
+        <p>No expense data to analyze</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Feed Grid -->
+  <div class="feed-grid">
+    <div class="feed-card glass-card">
+      <div class="feed-header">
+        <h3>Recent Transactions</h3>
+        <a routerLink="/expense" class="view-all-link">Manage Ledger &rarr;</a>
+      </div>
+
+      <div class="transaction-list" *ngIf="recentTransactions.length > 0">
+        <div class="transaction-row" *ngFor="let tx of recentTransactions">
+          <div class="tx-badge-container">
+            <div class="tx-type-icon" [ngClass]="tx.type">
+              <svg *ngIf="tx.type === 'income'" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+              <svg *ngIf="tx.type === 'expense'" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+            </div>
+            <div class="tx-details">
+              <p class="tx-title">{{ tx.title }}</p>
+              <span class="tx-meta">{{ tx.date | date:'mediumDate' }} <span *ngIf="tx.notes">&bull; {{ tx.notes }}</span></span>
+            </div>
+          </div>
+          <span class="tx-amount" [ngClass]="tx.type">
+            {{ tx.type === 'income' ? '+' : '-' }} {{ tx.amount | currency:'INR':'symbol':'1.0-2' }}
+          </span>
+        </div>
+      </div>
+
+      <div class="feed-fallback" *ngIf="recentTransactions.length === 0">
+        <p>No transactions made yet. Create your first record below!</p>
+        <div class="fallback-actions">
+          <a routerLink="/income" class="btn-secondary">Add Income</a>
+          <a routerLink="/expense" class="btn-primary">Add Expense</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-
+import { AuthService } from './auth.service';
 
 export interface Income{
     id:number;
@@ -16,14 +16,18 @@ export interface Income{
 })
 export class IncomeService {
   private http = inject(HttpClient);
+  private authService = inject(AuthService);
   private apiUrl = 'http://127.0.0.1:8000/api/income/'
 
   getIncome(): Observable<Income[]>{
-    return this.http.get<Income[]>(this.apiUrl)
+    const username = this.authService.currentUser?.username || 'admin';
+    return this.http.get<Income[]>(`${this.apiUrl}?username=${username}`);
   }
 
   addIncome(income: Income){
-    return this.http.post(this.apiUrl,income)
+    const username = this.authService.currentUser?.username || 'admin';
+    const payload = { ...income, username };
+    return this.http.post(this.apiUrl, payload);
   }
 
   deleteIncome(id:number){

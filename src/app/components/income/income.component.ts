@@ -1,8 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy } from '@angular/core';
 import { Income, IncomeService } from '../../services/income.service';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
+import { SearchService } from '../../services/search.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-income',
@@ -10,24 +12,57 @@ import { MatCardModule } from '@angular/material/card';
   templateUrl: './income.component.html',
   styleUrl: './income.component.css'
 })
-export class IncomeComponent implements OnInit{
+export class IncomeComponent implements OnInit, OnDestroy {
   private incomeService = inject(IncomeService);
+  private searchService = inject(SearchService);
+  
   incomes: Income[] = [];
+  filteredIncomes: Income[] = [];
+  searchQuery = '';
+  private searchSub!: Subscription;
+
   private fb = inject(FormBuilder);
   incomeForm!: FormGroup;
+
   ngOnInit() {
-    this.incomeService.getIncome().subscribe((data)=>{
-      this.incomes = data;
-    })
+    this.loadIncomes();
 
     this.incomeForm = this.fb.group({
       source: ['', Validators.required],
       amount: ['',[Validators.required, Validators.min(1)]],
       date: ['',Validators.required],
       notes: ['']
+    });
 
-    })
+    this.searchSub = this.searchService.query$.subscribe(query => {
+      this.searchQuery = query;
+      this.applySearchFilter();
+    });
+  }
 
+  ngOnDestroy() {
+    if (this.searchSub) {
+      this.searchSub.unsubscribe();
+    }
+  }
+
+  loadIncomes() {
+    this.incomeService.getIncome().subscribe((data)=>{
+      this.incomes = data;
+      this.applySearchFilter();
+    });
+  }
+
+  applySearchFilter() {
+    const q = this.searchQuery.trim().toLowerCase();
+    if (!q) {
+      this.filteredIncomes = [...this.incomes];
+    } else {
+      this.filteredIncomes = this.incomes.filter(item => 
+        item.source.toLowerCase().includes(q) || 
+        (item.notes && item.notes.toLowerCase().includes(q))
+      );
+    }
   }
 
   newIncome: Income = {
@@ -52,7 +87,7 @@ export class IncomeComponent implements OnInit{
     const formData = this.incomeForm.value;
     this.incomeService.addIncome(formData).subscribe({
       next:(res)=>{
-        this.successMessage = 'Income addedd';
+        this.successMessage = 'Income added';
         this.errorMessage ='';
         this.incomeForm.reset();
       this.newIncome = {
@@ -62,7 +97,7 @@ export class IncomeComponent implements OnInit{
             notes: '',
             id: 0,
       }
-      this.ngOnInit();
+      this.loadIncomes();
     },
     error: (err)=>{
       this.errorMessage = "Failed to save";
@@ -73,7 +108,7 @@ export class IncomeComponent implements OnInit{
 
   delete(id:number){
     this.incomeService.deleteIncome(id).subscribe(()=>{
-      this.incomes = this.incomes.filter(income => income.id !== id)
+      this.loadIncomes();
     })
   }
 
